@@ -1,0 +1,131 @@
+---
+title: "homework2final"
+author: "NinaE"
+date: "September 27, 2015"
+output: 
+  html_document: 
+    keep_md: yes
+    toc: yes
+---
+
+
+Loading data:
+
+```{r}
+library(gapminder)
+str(gapminder)
+```
+
+I am going to small test the data:
+
+```{r}
+mode(gapminder)
+class(gapminder)
+```
+
+Gapfinder is a data.frame and it's in "list" mode
+
+```{r}
+head(gapminder)
+tail(gapminder)
+gapminder[sample(nrow(gapminder), 10), ]
+View(gapminder)
+names(gapminder)
+ncol(gapminder)
+nrow(gapminder)
+dim(gapminder)
+```
+
+It has 6 variables, 6 columns and 1704 rows
+
+Variable flavors:
+county, continent: factor variables
+Year, lifeExp, pop and gdpPercap: numerical variables
+
+Exploring variables:
+
+```{r}
+class(gapminder$continent)
+summary(gapminder$continent)
+table(gapminder$contintent)
+levels(gapminder$continent)
+nlevels(gapminder$continent)
+unclass(gapminder$continent)
+class(gapminder$lifeExp)
+summary(gapminder$lifeExp)
+table(gapminder$lifeExp)
+levels(gapminder$lifeExp)
+nlevels(gapminder$lifeExp)
+unclass(gapminder$lifeExp)
+
+plot(lifeExp ~ continent, gapminder)
+plot(lifeExp ~ year, gapminder)
+plot(gapminder$continent, gapminder$lifeExp)
+plot(lifeExp ~ log(gdpPercap), gapminder)
+plot(lifeExp ~ country, gapminder)
+plot(lifeExp ~ continent, gapminder)
+```
+
+Exploring plot types:
+
+barplots
+
+```{r}
+library(ggplot2)
+barplot(table(gapminder$country))
+barplot(table(gapminder$continent))
+ggplot(gapminder, aes(x = continent)) + geom_bar()
+p <- ggplot(gapminder, aes(x = reorder(continent, continent, length)))
+p + geom_bar()
+p + geom_bar(width = 0.05)
+
+```
+
+scatterplots:
+
+```{r}
+p <- ggplot(gapminder, aes(x = pop, y = lifeExp))
+p + geom_point()
+
+ggplot(gapminder, aes(x = log10(pop), y = lifeExp)) + geom_point()
+p + geom_point() + scale_x_log10()
+p <- p + scale_x_log10()
+p + geom_point(aes(color = continent))
+ggplot(gapminder, aes(x = pop, y = lifeExp, color = continent)) + geom_point() + scale_x_log10()
+p + geom_point(alpha = (1/3), size = 3)
+p + geom_point() + geom_smooth()
+p + geom_point() + geom_smooth(lwd = 3, se = FALSE, method = "lm")
+p + aes(color = continent) + geom_point() + geom_smooth(lwd = 3, se = FALSE)
+p + aes(color = continent) + geom_point() + geom_smooth(lwd = 3, se = FALSE, method = "lm")
+p + geom_point(alpha = (1/3), size = 3) + facet_wrap(~ continent)
+geom_smooth(lwd = 2, se = FALSE)
+geom_smooth(lwd = 2, se = FALSE, method = "lm")
+```
+
+stripplots
+
+```{r}
+ggplot(gapminder, aes(x = continent, y = lifeExp)) + geom_point()
+ggplot(gapminder, aes(x = continent, y = lifeExp)) + geom_jitter()
+ggplot(gapminder, aes(x = continent, y = lifeExp)) + geom_jitter(position = position_jitter(width = 0.1, height = 0), alpha = 1/4)
+```
+
+boxplots
+
+```{r}
+ggplot(gapminder, aes(x = continent, y = lifeExp)) + geom_boxplot()
+ggplot(gapminder, aes(x = continent, y = lifeExp)) + geom_boxplot(outlier.colour = "blue") + geom_jitter(position = position_jitter(width = 0.1, height = 0), alpha = 1/4)
+ggplot(gapminder, aes(x = continent, y = lifeExp)) + geom_jitter(position = position_jitter(width = 0.1), alpha = 1/4) + stat_summary(fun.y = median, colour = "red", geom = "point", size = 2)
+ggplot(gapminder, aes(reorder(x = continent, lifeExp), y = lifeExp)) +geom_jitter(position = position_jitter(width = 0.1), alpha = 1/4) + stat_summary(fun.y = median, colour = "red", geom = "point", size = 2)
+```
+
+histogram
+
+```{r}
+ggplot(gapminder, aes(x = lifeExp, fill = continent)) + geom_histogram()
+ggplot(gapminder, aes(x = lifeExp, color = continent)) + geom_density()
+ggplot(gapminder, aes(x = lifeExp, fill = continent)) + geom_density(alpha = 0.2)
+```
+
+
+I used the different ggplot tutorials supplied by Jenny. 
